@@ -15,6 +15,7 @@ Please follow the next steps to call the API in your system:
 3. Create a new python environment using the following command: `python -m venv .venv`
 4. Activate the python environment with `source .venv/bin/activate`
 5. Install the requirements by using `pip install -r requirements.txt`
+6. Install the library by using `pip install -e`
 
 ### Fare-Finder API call example
 
