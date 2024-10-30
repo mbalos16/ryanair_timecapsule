@@ -1,12 +1,16 @@
 # Ryanair timecapsule
 
-This project is a reverse-engineering of the Ryanair API that allows collecting daily prices of flights. The [Fare-Finder Ryanair](https://www.ryanair.com/gb/en/cheap-flights) API is already implemented, and the Booking API is the next one on my list.
+This project is a reverse-engineering of the Ryanair API that allows collecting daily prices of flights. There are two API Endpoints supported:
+- [Fare-Finder Ryanair API](https://www.ryanair.com/gb/en/cheap-flights): where you can query all flights departing or arriving to a specific airport in a range of dates.
+- [Booking API](https://www.ryanair.com/gb/en): where you can query all the flights departing from a specified airport and arriving to another specified airport in a range of dates. 
 
-The goal of this tool is to collect data to feed machine learning models to forecast Ryanair prices, as a personal project. Please feel free to fork or contribute to this project. Keep in mind this is a personal project, feedback is more than welcome.
+Note that I have found that the prices between the two APIs differ in rare cases. The most trustable source being the Booking API, as it is the one used one booking in the Ryanair website.
+
+The goal of this tool is to collect data to feed machine learning models to forecast Ryanair prices. Please feel free to fork or contribute to this project. Keep in mind this is a personal project, feedback is more than welcome.
 
 ## Getting started
 
-Please follow the next steps to call the API in your system:
+Please follow the next steps to call the Fare-Finder API or the Booking API in your system:
 
 ### Setup
 
@@ -33,6 +37,20 @@ python download_fares_data.py \
     --out-dir <output-directory>
 ```
 
+### Booking API call example
+
+```
+python download_booking.py \
+    --depart-iata-code STN \
+    --destination-iata-code VLC \
+    --depart-date-from 2024-10-25 \
+    --depart-date-to 2024-11-10 \
+    --n-adults 1 \
+    --n-teenagers 0 \
+    --n-children 0 \
+    --n-infants 0 \ 
+    --out-dir <output-directory>
+```
 ## Contribution
 
 Pull requests and issues are welcome.
