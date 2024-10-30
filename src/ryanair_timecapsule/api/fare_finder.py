@@ -1,6 +1,6 @@
 from datetime import date, time
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 from . import utils
 from .constants import MARKETS
@@ -22,7 +22,7 @@ class Params(BaseModel, extra="forbid"):
     offset: int = Field(default=0, ge=0)
     limit: int = Field(default=39999, ge=1)
 
-    @validator("outboundDepartureDateFrom", "outboundDepartureDateTo")
+    @field_validator("outboundDepartureDateFrom", "outboundDepartureDateTo")
     def check_date(cls, value):
         try:
             date.fromisoformat(value)
@@ -30,7 +30,7 @@ class Params(BaseModel, extra="forbid"):
             raise ValueError(f"The date {value} needs to be in format YYYY-MM-DD.")
         return value
 
-    @validator("outboundDepartureTimeFrom", "outboundDepartureTimeTo")
+    @field_validator("outboundDepartureTimeFrom", "outboundDepartureTimeTo")
     def check_time(cls, value):
         try:
             time.fromisoformat(value)
@@ -38,7 +38,7 @@ class Params(BaseModel, extra="forbid"):
             raise ValueError(f"The time {value} needs to be in format HH:MM.")
         return value
 
-    @validator("market")
+    @field_validator("market")
     def check_market(cls, value):
         assert (
             value in MARKETS
