@@ -22,7 +22,11 @@ def mock_call_api(url, params, return_json):
 def test_get_flights_fares_correct_params(monkeypatch):
     monkeypatch.setattr("ryanair_timecapsule.api.utils.call_api", mock_call_api)
     url, params, return_json = get_flights_fares(
-        "STN", "2024-03-19", "2024-03-24", 1, 5
+        depart_iata_code="STN",
+        depart_date_from="2024-03-19",
+        depart_date_to="2024-03-24",
+        duration_from=1,
+        duration_to=5,
     )
     expected_params = DEFAULT_PARAMS.copy()
     expected_params.update(
