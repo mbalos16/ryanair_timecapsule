@@ -10,7 +10,7 @@ python download_fares_data.py \
     --duration-to 4  \
     --n-passangers 1 \
     --market en-gb \
-    --out-dir /Users/maria/Desktop/Ryanair/
+    --out-dir ../test
 """
 
 import argparse
