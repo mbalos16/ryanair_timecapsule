@@ -8,7 +8,7 @@ python download_booking.py \
     --n-adults 1 \
     --n-teenagers 0 \
     --n-children 0 \
-    --n-infants 0 \ 
+    --n-infants 0 \
     --out-dir ../test
 """
 
@@ -59,7 +59,7 @@ def parse_args():
         "--n-adults",
         default=Params.model_fields["ADT"].default,
         type=int,
-        help="Number of adult passangers, aged 16 or over at the time of travel.",
+        help="Number of adult passengers, aged 16 or over at the time of travel.",
     )
 
     params.add_argument(
@@ -73,14 +73,14 @@ def parse_args():
         "--n-children",
         default=Params.model_fields["CHD"].default,
         type=int,
-        help="Number of children passangers, aged 2 to 11 years old at the time of travel.",
+        help="Number of children passengers, aged 2 to 11 years old at the time of travel.",
     )
 
     params.add_argument(
         "--n-infants",
         default=Params.model_fields["INF"].default,
         type=int,
-        help="Number of  passangers under 2 years old at the time of travel.",
+        help="Number of  passengers under 2 years old at the time of travel.",
     )
 
     params.add_argument(
@@ -88,7 +88,7 @@ def parse_args():
         required=True,
         type=str,
         help=(
-            "Path to the directory wh[]ere the requested results will be saved in JSON format."
+            "Path to the directory where the requested results will be saved in JSON format."
         ),
     )
 

@@ -5,10 +5,10 @@ python download_fares_data.py \
     --depart-date-from 2024-10-08 \
     --depart-date-to 2024-11-15 \
     --depart-time-from 06:00 \
-    --depart-time-to 00:00 \
+    --depart-time-to 23:59 \
     --duration-from 1 \
     --duration-to 4  \
-    --n-passangers 1 \
+    --n-passengers 1 \
     --market en-gb \
     --out-dir ../test
 """
@@ -78,10 +78,10 @@ def parse_args():
     )
 
     params.add_argument(
-        "--n-passangers",
+        "--n-passengers",
         default=Params.model_fields["adultPaxCount"].default,
         type=int,
-        help="Number of passangers.",
+        help="Number of passengers.",
     )
 
     params.add_argument(
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         duration_to=args.duration_to,
         depart_time_from=args.depart_time_from,
         depart_time_to=args.depart_time_to,
-        n_passengers=args.n_passangers,
+        n_passengers=args.n_passengers,
         market=args.market,
     )
 
