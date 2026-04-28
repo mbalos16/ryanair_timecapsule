@@ -93,12 +93,12 @@ def test_get_booking_incorrect_params(
     monkeypatch.setattr("ryanair_timecapsule.api.booking.get_auth", mock_get_auth)
     with pytest.raises(ValidationError):
         url, params, headers, return_json = get_flights_booking(
-            n_adults,
-            n_children,
-            n_infants,
-            n_teenagers,
-            depart_iata_code,
-            destination_iata_code,
-            depart_date_from,
-            depart_date_to,
+            n_adults=n_adults,
+            n_teenagers=n_teenagers,
+            n_children=n_children,
+            n_infants=n_infants,
+            depart_iata_code=depart_iata_code,
+            destination_iata_code=destination_iata_code,
+            depart_date_from = depart_date_from,
+            depart_date_to=depart_date_to,
         )
