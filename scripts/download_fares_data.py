@@ -115,22 +115,28 @@ if __name__ == "__main__":
         exception_message = f"The path '{args.out_dir}' is not a valid path."
         raise ValueError(exception_message)
 
-    result = get_flights_fares(
-        depart_iata_code=args.depart_iata_code,
-        depart_date_from=args.depart_date_from,
-        depart_date_to=args.depart_date_to,
-        duration_from=args.duration_from,
-        duration_to=args.duration_to,
-        depart_time_from=args.depart_time_from,
-        depart_time_to=args.depart_time_to,
-        n_passengers=args.n_passengers,
-        market=args.market,
-    )
+    if args.debug:
+        print("---- The arguments are ----")
+        print(
+            f"Departure IATA code: {args.depart_iata_code}\nDepart date from: {args.depart_date_from}\nDepart date to: {args.depart_date_to}\nDuration from: {args.duration_from}\nDuration to: {args.duration_to}\nDepart time from: {args.depart_time_from}\nDepart time to: {args.depart_time_to}\nNumber of passengers: {args.n_passengers}\nMarket: {args.market}\n"
+        )
+    else:
+        result = get_flights_fares(
+            depart_iata_code=args.depart_iata_code,
+            depart_date_from=args.depart_date_from,
+            depart_date_to=args.depart_date_to,
+            duration_from=args.duration_from,
+            duration_to=args.duration_to,
+            depart_time_from=args.depart_time_from,
+            depart_time_to=args.depart_time_to,
+            n_passengers=args.n_passengers,
+            market=args.market,
+        )
 
-    now = datetime.now().strftime("%Y%m%dT%H%M%S")
-    file_name = f"{now}_{args.depart_iata_code}_FROM-{args.depart_date_from}_TO-{args.depart_date_to}"
-    path = os.path.join(args.out_dir, f"{file_name}.json")
+        now = datetime.now().strftime("%Y%m%dT%H%M%S")
+        file_name = f"{now}_{args.depart_iata_code}_FROM-{args.depart_date_from}_TO-{args.depart_date_to}"
+        path = os.path.join(args.out_dir, f"{file_name}.json")
 
-    with open(path, "w") as f:
-        data = json.dumps(result, indent=4)
-        f.write(data)
+        with open(path, "w") as f:
+            data = json.dumps(result, indent=4)
+            f.write(data)

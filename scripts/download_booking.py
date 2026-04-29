@@ -108,22 +108,28 @@ if __name__ == "__main__":
         exception_message = f"The path '{args.out_dir}' is not a valid path."
         raise ValueError(exception_message)
 
-    result = get_flights_booking(
-        n_adults=args.n_adults,
-        n_teenagers=args.n_teenagers,
-        n_children=args.n_children,
-        n_infants=args.n_infants,
-        depart_iata_code=args.depart_iata_code,
-        destination_iata_code=args.destination_iata_code,
-        depart_date_from=args.depart_date_from,
-        depart_date_to=args.depart_date_to,
-    )
+    if args.debug:
+        print("---- The arguments are ----")
+        print(
+            f"Number of adults: {args.n_adults}\nNumber of teenagers: {args.n_teenagers}\nNumber of children: {args.n_children}\nNumber of infants: {args.n_infants}\nDeparture IATA code: {args.depart_iata_code}\nDestination IATA code: {args.destination_iata_code}\nDepart date from: {args.depart_date_from}\nDepart date to: {args.depart_date_to}\n"
+        )
+    else:
+        result = get_flights_booking(
+            n_adults=args.n_adults,
+            n_teenagers=args.n_teenagers,
+            n_children=args.n_children,
+            n_infants=args.n_infants,
+            depart_iata_code=args.depart_iata_code,
+            destination_iata_code=args.destination_iata_code,
+            depart_date_from=args.depart_date_from,
+            depart_date_to=args.depart_date_to,
+        )
 
-    # Save the data
-    now = datetime.now().strftime("%Y%m%dT%H%M%S")
-    file_name = f"{now}_{args.depart_iata_code}_FROM-{args.depart_date_from}_TO-{args.depart_date_to}_Booking"
-    path = os.path.join(args.out_dir, f"{file_name}.json")
+        # Save the data
+        now = datetime.now().strftime("%Y%m%dT%H%M%S")
+        file_name = f"{now}_{args.depart_iata_code}_FROM-{args.depart_date_from}_TO-{args.depart_date_to}_Booking"
+        path = os.path.join(args.out_dir, f"{file_name}.json")
 
-    with open(path, "w") as f:
-        data = json.dumps(result, indent=4)
-        f.write(data)
+        with open(path, "w") as f:
+            data = json.dumps(result, indent=4)
+            f.write(data)
