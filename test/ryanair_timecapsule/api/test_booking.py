@@ -99,6 +99,6 @@ def test_get_booking_incorrect_params(
             n_infants=n_infants,
             depart_iata_code=depart_iata_code,
             destination_iata_code=destination_iata_code,
-            depart_date_from = depart_date_from,
+            depart_date_from=depart_date_from,
             depart_date_to=depart_date_to,
         )

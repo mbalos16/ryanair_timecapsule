@@ -40,9 +40,9 @@ class Params(BaseModel, extra="forbid"):
 
     @field_validator("market")
     def check_market(cls, value):
-        assert (
-            value in MARKETS
-        ), f"'{value}' not recognized as a valid market: {MARKETS}."
+        assert value in MARKETS, (
+            f"'{value}' not recognized as a valid market: {MARKETS}."
+        )
         return value
 
 

@@ -71,25 +71,32 @@ def get_flights_booking(
         "Pragma": "no-cache",
     }
     auth_params = {
-        "adults": n_adults, 
-        "teens": n_teenagers, 
-        "children": n_children, 
+        "adults": n_adults,
+        "teens": n_teenagers,
+        "children": n_children,
         "infants": n_infants,
-        "originIata": depart_iata_code, 
+        "originIata": depart_iata_code,
         "destinationIata": destination_iata_code,
-        "dateOut": depart_date_from, 
+        "dateOut": depart_date_from,
         "dateIn": depart_date_to,
-        "isReturn": "true", 
-        "discount": 0, 
+        "isReturn": "true",
+        "discount": 0,
         "promoCode": "",
     }
 
-    auth_response = utils.call_api(url=AUTH_ENDPOINT, params=auth_params, return_json=False, headers=headers)
+    auth_response = utils.call_api(
+        url=AUTH_ENDPOINT, params=auth_params, return_json=False, headers=headers
+    )
     rid = auth_response.cookies.get("rid")
     rid_sig = auth_response.cookies.get("rid.sig")
     if not rid or not rid_sig:
         raise ValueError("'rid' and 'rid.sig' not found among cookies.")
 
     headers["Cookie"] = "; ".join(f"{k}={v}" for k, v in auth_response.cookies.items())
-    api_params = {k: str(v).lower() if isinstance(v, bool) else v for k, v in parameters.model_dump().items()}
-    return utils.call_api(url=ENDPOINT, params=api_params, return_json=True, headers=headers)
+    api_params = {
+        k: str(v).lower() if isinstance(v, bool) else v
+        for k, v in parameters.model_dump().items()
+    }
+    return utils.call_api(
+        url=ENDPOINT, params=api_params, return_json=True, headers=headers
+    )
