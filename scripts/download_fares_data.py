@@ -127,7 +127,7 @@ if __name__ == "__main__":
         market=args.market,
     )
 
-    now = datetime.now().isoformat()
+    now = datetime.now().strftime("%Y%m%dT%H%M%S")
     file_name = f"{now}_{args.depart_iata_code}_FROM-{args.depart_date_from}_TO-{args.depart_date_to}"
     path = os.path.join(args.out_dir, f"{file_name}.json")
 
