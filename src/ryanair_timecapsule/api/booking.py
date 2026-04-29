@@ -1,4 +1,3 @@
-import re
 from datetime import date, time
 
 from pydantic import BaseModel, Field, field_validator
@@ -19,8 +18,15 @@ class Params(BaseModel, extra="forbid"):
     Destination: str = Field(min_length=3, max_length=3)
     DateOut: str = Field(max_length=10)
     DateIn: str = Field(max_length=10)
-    ToUs: str = Field(default="AGREED")  # Terms of use
-    RoundTrip: bool = Field(default=False)
+    ToUs: str = Field(default="AGREED")
+    RoundTrip: bool = Field(default=True)
+    promoCode: str = Field(default="")
+    IncludeConnectingFlights: bool = Field(default=False)
+    FlexDaysBeforeOut: int = Field(default=2)
+    FlexDaysOut: int = Field(default=2)
+    FlexDaysBeforeIn: int = Field(default=2)
+    FlexDaysIn: int = Field(default=2)
+    IncludePrimeFares: bool = Field(default=False)
 
     @field_validator("DateOut", "DateIn")
     def check_date(cls, value):
@@ -29,26 +35,6 @@ class Params(BaseModel, extra="forbid"):
         except:
             raise ValueError(f"The date {value} needs to be in format YYYY-MM-DD.")
         return value
-
-
-# Authentication
-def get_auth() -> tuple:
-    response = utils.call_api(url=AUTH_ENDPOINT, return_json=False)
-    cookies = response.headers["Set-Cookie"]
-    if "rid=" not in cookies or "rid.sig=" not in cookies:
-        raise ValueError(
-            "Authentication ids ('rid' and 'rid.sig') not found in response headers."
-        )
-    rid = re.match(r".*rid=(.+?)[;, ].*", cookies)
-    if not rid:
-        raise ValueError("'rid' not found among cookies.")
-    rid = rid.group(1)
-    rid_sig = re.match(r".*rid\.sig=(.+?)[;, ].*", cookies)
-
-    if not rid_sig:
-        raise ValueError("'rid.sig' not found among cookies.")
-    rid_sig = rid_sig.group(1)
-    return rid, rid_sig
 
 
 # Request the data from booking
@@ -72,19 +58,38 @@ def get_flights_booking(
         Destination=destination_iata_code,
         DateOut=depart_date_from,
         DateIn=depart_date_to,
-        RoundTrip=False,
         ToUs="AGREED",
     )
 
-    api_params = parameters.model_dump()
-    rid, rid_sig = get_auth()
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
-        "Cookie": f"rid={rid};rid.sig={rid_sig}",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0",
+        "Accept": "application/json, text/plain, */*",
+        "client": "desktop",
+        "client-version": "3.195.0",
+        "Referer": f"https://www.ryanair.com/gb/en/trip/flights/select?adults={n_adults}&teens={n_teenagers}&children={n_children}&infants={n_infants}&dateOut={depart_date_from}&dateIn={depart_date_to}&isReturn=true&originIata={depart_iata_code}&destinationIata={destination_iata_code}",
         "TE": "trailers",
         "Pragma": "no-cache",
     }
+    auth_params = {
+        "adults": n_adults, 
+        "teens": n_teenagers, 
+        "children": n_children, 
+        "infants": n_infants,
+        "originIata": depart_iata_code, 
+        "destinationIata": destination_iata_code,
+        "dateOut": depart_date_from, 
+        "dateIn": depart_date_to,
+        "isReturn": "true", 
+        "discount": 0, 
+        "promoCode": "",
+    }
 
-    return utils.call_api(
-        url=ENDPOINT, params=api_params, return_json=True, headers=headers
-    )
+    auth_response = utils.call_api(url=AUTH_ENDPOINT, params=auth_params, return_json=False, headers=headers)
+    rid = auth_response.cookies.get("rid")
+    rid_sig = auth_response.cookies.get("rid.sig")
+    if not rid or not rid_sig:
+        raise ValueError("'rid' and 'rid.sig' not found among cookies.")
+
+    headers["Cookie"] = "; ".join(f"{k}={v}" for k, v in auth_response.cookies.items())
+    api_params = {k: str(v).lower() if isinstance(v, bool) else v for k, v in parameters.model_dump().items()}
+    return utils.call_api(url=ENDPOINT, params=api_params, return_json=True, headers=headers)
