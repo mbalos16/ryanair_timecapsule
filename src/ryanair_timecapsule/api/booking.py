@@ -32,7 +32,7 @@ class Params(BaseModel, extra="forbid"):
     def check_date(cls, value):
         try:
             date.fromisoformat(value)
-        except:
+        except ValueError:
             raise ValueError(f"The date {value} needs to be in format YYYY-MM-DD.")
         return value
 
