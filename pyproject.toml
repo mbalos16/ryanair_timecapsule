@@ -1,0 +1,23 @@
+[project]
+name = "ryanair_timecapsule"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.6,<3",
+    "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==24.2.0",
+    "isort==5.13.2",
+    "pytest==8.0.1",
+    "requests-mock==1.11.0",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
