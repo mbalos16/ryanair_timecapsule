@@ -16,15 +16,12 @@ Please follow the next steps to call the Fare-Finder API or the Booking API in y
 
 1. Open a terminal and clone the repository using: `git clone https://github.com/mbalos16/ryanair_timecapsule.git`
 2. Navigate to the cloned folder using the `cd` command.
-3. Create a new python environment using the following command: `python -m venv .venv`
-4. Activate the python environment with `source .venv/bin/activate`
-5. Install the requirements by using `pip install -r requirements.txt`
-6. Install the library by using `pip install -e .`
+3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) if you don't have it already.
 
 ### Fare-Finder API call example
 
 ```
-python download_fares_data.py \
+uv run python scripts/download_fares_data.py \
     --depart-iata-code STN \
     --depart-date-from 2024-10-08 \
     --depart-date-to 2024-11-15 \
@@ -40,7 +37,7 @@ python download_fares_data.py \
 ### Booking API call example
 
 ```
-python download_booking.py \
+uv run python scripts/download_booking.py \
     --depart-iata-code STN \
     --destination-iata-code VLC \
     --depart-date-from 2024-10-25 \
