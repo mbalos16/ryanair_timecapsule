@@ -56,4 +56,4 @@ Pull requests and issues are welcome.
 
 This repository is licensed under CC0. More info in the [LICENSE](./LICENSE) file.
 
-Copyright (c) 2024 Maria Magdalena Balos
+Copyright (c) 2026 Maria Magdalena Balos
