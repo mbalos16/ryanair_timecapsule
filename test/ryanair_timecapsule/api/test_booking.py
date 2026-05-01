@@ -1,24 +1,21 @@
 import pytest
+import requests
 from pydantic import ValidationError
 
 from ryanair_timecapsule.api.booking import ENDPOINT, get_flights_booking
-from ryanair_timecapsule.api.utils import call_api
 
 
 def mock_call_api(url, params, headers, return_json):
+    if not return_json:
+        response = requests.models.Response()
+        response.cookies.set("rid", "fake_rid")
+        response.cookies.set("rid.sig", "fake_rid_sig")
+        return response
     return url, params, headers, return_json
 
 
 def test_get_booking_correct_params(monkeypatch):
-    authed = False
-
-    def mock_get_auth(*args, **kwargs):
-        nonlocal authed
-        authed = True
-        return "fake_rid", "fake_rid_sig"
-
     monkeypatch.setattr("ryanair_timecapsule.api.utils.call_api", mock_call_api)
-    monkeypatch.setattr("ryanair_timecapsule.api.booking.get_auth", mock_get_auth)
     url, params, headers, return_json = get_flights_booking(
         n_adults=1,
         n_children=0,
@@ -39,8 +36,15 @@ def test_get_booking_correct_params(monkeypatch):
         "Destination": "VLC",
         "DateOut": "2024-10-29",
         "DateIn": "2024-10-31",
-        "RoundTrip": False,
         "ToUs": "AGREED",
+        "RoundTrip": "true",
+        "promoCode": "",
+        "IncludeConnectingFlights": "false",
+        "FlexDaysBeforeOut": 2,
+        "FlexDaysOut": 2,
+        "FlexDaysBeforeIn": 2,
+        "FlexDaysIn": 2,
+        "IncludePrimeFares": "false",
     }
 
     # Check Endpoint
@@ -53,8 +57,6 @@ def test_get_booking_correct_params(monkeypatch):
     assert type(params) is dict
 
     assert params == expected_params
-
-    assert authed == True
 
 
 @pytest.mark.parametrize(
@@ -82,15 +84,7 @@ def test_get_booking_incorrect_params(
     depart_date_to,
 ):
 
-    authed = False
-
-    def mock_get_auth(*args, **kwargs):
-        nonlocal authed
-        authed = True
-        return "fake_rid", "fake_rid_sig"
-
     monkeypatch.setattr("ryanair_timecapsule.api.utils.call_api", mock_call_api)
-    monkeypatch.setattr("ryanair_timecapsule.api.booking.get_auth", mock_get_auth)
     with pytest.raises(ValidationError):
         url, params, headers, return_json = get_flights_booking(
             n_adults=n_adults,

@@ -6,7 +6,7 @@ from requests.exceptions import HTTPError
 from ryanair_timecapsule.api.utils import call_api
 
 
-def mock_requests():
+def make_mock_session():
     session = requests.Session()
     adapter = requests_mock.Adapter()
     session.mount("mock://", adapter=adapter)
@@ -19,32 +19,31 @@ def mock_requests():
         request_headers={"key": "val"},
         text="Headers received",
     )
-
-    return session.get
+    return session
 
 
 def test_call_api_json(monkeypatch):
-    monkeypatch.setattr(requests, "get", mock_requests())
+    monkeypatch.setattr("ryanair_timecapsule.api.utils.session", make_mock_session())
     output = call_api(url="mock://test.com/json")
     assert type(output) is dict
     assert output == {"a": "b"}
 
 
 def test_call_api_text(monkeypatch):
-    monkeypatch.setattr(requests, "get", mock_requests())
+    monkeypatch.setattr("ryanair_timecapsule.api.utils.session", make_mock_session())
     output = call_api(url="mock://test.com/txt", return_json=False)
     assert type(output) is requests.models.Response
     assert output.text == "abcd"
 
 
 def test_call_api_error(monkeypatch):
-    monkeypatch.setattr(requests, "get", mock_requests())
+    monkeypatch.setattr("ryanair_timecapsule.api.utils.session", make_mock_session())
     with pytest.raises(HTTPError):
         call_api(url="mock://test.com/error")
 
 
 def test_call_api_headers(monkeypatch):
-    monkeypatch.setattr(requests, "get", mock_requests())
+    monkeypatch.setattr("ryanair_timecapsule.api.utils.session", make_mock_session())
     output = call_api(
         url="mock://test.com/headers", headers={"key": "val"}, return_json=False
     )
