@@ -1,6 +1,17 @@
 [project]
 name = "ryanair_timecapsule"
 version = "0.1.0"
+description = "Reverse-engineering of the Ryanair API that allows collecting daily prices of flights."
+authors = [{name = "Maria Magdalena Balos", email = "mariabalos16@gmail.com"}]
+license = {text = "CC0-1.0"}
+keywords = ["ryanair", "flights", "fare", "price", "scraping", "machine learning"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2.6,<3",
