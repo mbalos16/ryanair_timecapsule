@@ -1,7 +1,5 @@
 from datetime import date, time
-
 from pydantic import BaseModel, Field, field_validator
-
 from . import utils
 from .constants import MARKETS
 
