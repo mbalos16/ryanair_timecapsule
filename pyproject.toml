@@ -35,5 +35,6 @@ where = ["src"]
 
 [dependency-groups]
 dev = [
+    "pytest>=8.0.1",
     "ruff>=0.15.12",
 ]
