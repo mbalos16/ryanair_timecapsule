@@ -92,7 +92,6 @@ def get_flights_booking(
     if not rid or not rid_sig:
         raise ValueError("'rid' and 'rid.sig' not found among cookies.")
 
-    headers["Cookie"] = "; ".join(f"{k}={v}" for k, v in auth_response.cookies.items())
     api_params = {
         k: str(v).lower() if isinstance(v, bool) else v
         for k, v in parameters.model_dump().items()
