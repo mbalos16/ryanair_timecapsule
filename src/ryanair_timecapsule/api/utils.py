@@ -8,6 +8,7 @@ retry = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503])
 session = requests.Session()
 session.mount("https://", HTTPAdapter(max_retries=retry))
 
+
 def call_api(
     url: str, params: dict = None, return_json: bool = True, headers: dict = None
 ) -> dict | Response:

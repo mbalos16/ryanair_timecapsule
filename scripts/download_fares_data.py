@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.out_dir):
         exception_message = f"The path '{args.out_dir}' is not a valid path."
-        raise ValueError(exception_message)
+        raise FileNotFoundError(exception_message)
 
     if args.debug:
         print("---- The arguments are ----")
