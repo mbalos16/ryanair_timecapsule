@@ -53,7 +53,7 @@ def make_tarfile(output_filename: str, source_dir: str):
 
         # Write each path separately in the tar file.
         for path in data_paths:
-            tar.add(source_dir, arcname=os.path.split(path)[-1])
+            tar.add(path, arcname=os.path.split(path)[-1])
 
 
 def download_ryanair(
