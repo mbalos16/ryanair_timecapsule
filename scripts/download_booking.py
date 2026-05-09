@@ -80,7 +80,7 @@ def parse_args():
         "--n-infants",
         default=Params.model_fields["INF"].default,
         type=int,
-        help="Number of  passengers under 2 years old at the time of travel.",
+        help="Number of passengers under 2 years old at the time of travel.",
     )
 
     params.add_argument(
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.out_dir):
         exception_message = f"The path '{args.out_dir}' is not a valid path."
-        raise ValueError(exception_message)
+        raise FileNotFoundError(exception_message)
 
     if args.debug:
         print("---- The arguments are ----")

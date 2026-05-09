@@ -1,5 +1,5 @@
 import requests
-from ryanair_timecapsule.api.fare_finder import Params, get_flights_fares
+from ryanair_timecapsule.api.fare_finder import get_flights_fares
 from datetime import datetime
 import json
 import tempfile
@@ -71,7 +71,7 @@ def download_ryanair(
     Args:
         iata_codes (set): A set of unique airports IATA codes to be used to call the API.
         date_from (str): The date from when to request the data.
-        date_to (str): The ddate until when to request the data.
+        date_to (str): The date until when to request the data.
         duration_from (int): The minimum time of the flight.
         duration_to (int): The maximum time of the flight.
         output_path (str): Path where the compressed file will be saved.
@@ -86,7 +86,7 @@ def download_ryanair(
                 "depart_date_from": date_from,
                 "depart_date_to": date_to,
                 "duration_from": duration_from,
-                "dursation_to": duration_to,
+                "duration_to": duration_to,
             }
 
             response = get_flights_fares(
