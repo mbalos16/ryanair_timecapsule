@@ -16,6 +16,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pydantic>=2.6,<3",
     "requests>=2.31,<3",
+    "tqdm>=4.67.3",
 ]
 
 [project.optional-dependencies]
