@@ -1,11 +1,12 @@
 import requests
 from ryanair_timecapsule.api.fare_finder import get_flights_fares
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import tempfile
 import tarfile
 import os
 from glob import glob
+from tqdm import tqdm
 
 ACTIVE_IATA_ENDPOINT = "https://www.ryanair.com/api/views/locate/5/airports/en/active"
 OUTPUT_ABS_PATH = "/home/mbalos/Desktop/projects/ryanair_timecapsule"
@@ -110,19 +111,30 @@ def download_ryanair(
 
 if __name__ == "__main__":
     iata_codes = download_active_iata_codes()
+    duration_in_days = 365
+
+    # Uncoment the for loop and indent the rest of the code if you want to make more than one requests for all IATA codes.
+    # for i in tqdm(range(50)):
+    date_time_now = datetime.now()
+    date_time_now_str = date_time_now.isoformat()
+    date_now = date_time_now_str[:10]
+    time_now = date_time_now_str[11:]
+    year, month, day = date_now.split("-")
+    date_end = (date_time_now + timedelta(duration_in_days)).isoformat()[:10]
+
     output_path = os.path.join(
         OUTPUT_ABS_PATH,
         "ryanair_timecapsule_results",
-        str(datetime.now().year),
-        str(datetime.now().month),
-        str(datetime.now().day),
-        f"{datetime.now().strftime('%H%M%S')}.tar.gz",
+        year,
+        month,
+        day,
+        f"{time_now}.tar.gz",
     )
 
     download_ryanair(
         iata_codes=iata_codes,
-        date_from="2026-05-07",
-        date_to="2026-05-09",
+        date_from=date_now,
+        date_to=date_end,
         duration_from=1,
         duration_to=5,
         output_path=output_path,
