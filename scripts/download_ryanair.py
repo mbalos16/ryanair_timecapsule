@@ -7,21 +7,9 @@ import tarfile
 import os
 from glob import glob
 from tqdm import tqdm
+from ryanair_timecapsule.api.constants import IATA_CODES
 
-ACTIVE_IATA_ENDPOINT = "https://www.ryanair.com/api/views/locate/5/airports/en/active"
 OUTPUT_ABS_PATH = "/home/mbalos/Desktop/projects/ryanair_timecapsule"
-
-
-def download_active_iata_codes() -> set:
-    """Makes a request to a specific URL and returns the active Ryanair IATA codes
-
-    Returns:
-        set: The active Ryanair IATA codes.
-    """
-    response = requests.get(ACTIVE_IATA_ENDPOINT).json()
-    iata_codes = set([country["code"] for country in response])
-    return iata_codes
-
 
 def make_tarfile(output_filename: str, source_dir: str):
     """Creates a gzipped tar archive that contains a top-level folder mirroring source_dir.
@@ -114,7 +102,6 @@ def download_ryanair(
 
 
 if __name__ == "__main__":
-    iata_codes = download_active_iata_codes()
     duration_in_days = 365
 
     # Uncoment the for loop and indent the rest of the code if you want to make more than one requests for all IATA codes.
@@ -136,7 +123,7 @@ if __name__ == "__main__":
     )
     print("Downloading...")
     download_ryanair(
-        iata_codes=iata_codes,
+        iata_codes=IATA_CODES,
         date_from=date_now,
         date_to=date_end,
         duration_from=1,
