@@ -6,7 +6,6 @@ import tempfile
 import tarfile
 import os
 from glob import glob
-from tqdm import tqdm
 from ryanair_timecapsule.api.constants import IATA_CODES
 
 OUTPUT_ABS_PATH = "/home/mbalos/Desktop/projects/ryanair_timecapsule"
@@ -103,9 +102,6 @@ def download_ryanair(
 
 if __name__ == "__main__":
     duration_in_days = 365
-
-    # Uncoment the for loop and indent the rest of the code if you want to make more than one requests for all IATA codes.
-    # for i in tqdm(range(50)):
     date_time_now = datetime.now()
     date_time_now_str = date_time_now.isoformat()
     date_now = date_time_now_str[:10]
