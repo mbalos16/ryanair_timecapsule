@@ -15,7 +15,7 @@ class Params(BaseModel, extra="forbid"):
     durationFrom: float | int = Field(gt=0)
     durationTo: float | int = Field(gt=0)
     adultPaxCount: int = Field(default=1, ge=1)
-    market: str = Field(default="en-gb")
+    market: str = Field(default="gb")
     searchMode: str = Field(default="ALL")
     offset: int = Field(default=0, ge=0)
     limit: int = Field(default=39999, ge=1)

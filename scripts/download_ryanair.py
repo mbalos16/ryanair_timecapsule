@@ -63,6 +63,7 @@ def download_ryanair(
     date_to: str,
     duration_from: int,
     duration_to: int,
+    market:str,
     output_path: str,
 ):
     """Calls the ryanair farefinders api for each IATA code in iata_codes,
@@ -75,6 +76,7 @@ def download_ryanair(
         date_to (str): The date until when to request the data.
         duration_from (int): The minimum time of the flight.
         duration_to (int): The maximum time of the flight.
+        market (str): what market to query.
         output_path (str): Path where the compressed file will be saved.
          If just a filename is given the result will be created in the directory
          where the script has been runed from.
@@ -83,11 +85,12 @@ def download_ryanair(
     with tempfile.TemporaryDirectory() as temp_dir_name:
         for iata in iata_codes:
             metadata = {
-                "date": datetime.now().strftime("%Y%m%dT%H%M%S"),
+                "date": datetime.now().isoformat(),
                 "depart_date_from": date_from,
                 "depart_date_to": date_to,
                 "duration_from": duration_from,
                 "duration_to": duration_to,
+                "market": market,
             }
 
             response = get_flights_fares(
@@ -96,6 +99,7 @@ def download_ryanair(
                 depart_date_to=date_to,
                 duration_from=duration_from,
                 duration_to=duration_to,
+                market=market,
             )
 
             result = {"metadata": metadata, "response": response}
@@ -130,12 +134,13 @@ if __name__ == "__main__":
         day,
         f"{time_now}.tar.gz",
     )
-
+    print("Downloading...")
     download_ryanair(
         iata_codes=iata_codes,
         date_from=date_now,
         date_to=date_end,
         duration_from=1,
         duration_to=5,
+        market="es",
         output_path=output_path,
     )
