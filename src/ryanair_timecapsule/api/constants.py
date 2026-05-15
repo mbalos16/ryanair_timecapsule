@@ -1,42 +1,15 @@
-# Ryanair current markets are defined here: https://www.ryanair.com/content/ryanair.markets.json
-MARKETS = (
-    "de-at",
-    "fr-be",
-    "nl-be",
-    "en-ba",
-    "bg-bg",
-    "zh-cn",
-    "en-hr",
-    "en-cy",
-    "cs-cz",
-    "da-dk",
-    "en-ee",
-    "en-fi",
-    "fr-fr",
-    "de-de",
-    "en-gb",
-    "el-gr",
-    "hu-hu",
-    "en-ie",
-    "it-it",
-    "en-lv",
-    "lv-lv",
-    "lt-lt",
-    "fr-lu",
-    "en-mt",
-    "en-me",
-    "fr-ma",
-    "nl-nl",
-    "no-no",
-    "pl-pl",
-    "pt-pt",
-    "ro-ro",
-    "en-rs",
-    "en-sk",
-    "es-es",
-    "ca-es",
-    "sv-se",
-    "en-tr",
-    "uk-ua",
-    "en-us",
-)
+import requests
+
+MARKETS_ENDPOINT = "https://www.ryanair.com/content/ryanair.markets.json"
+
+def download_active_market() -> set:
+    """Makes a request to a specific URL and returns the active Ryanair market codes
+
+    Returns:
+        set: The active Ryanair markets.
+    """
+    response = requests.get(MARKETS_ENDPOINT).json()
+    market_codes = {country["code"] for country in response}
+    return market_codes
+
+MARKETS = download_active_market()
