@@ -8,7 +8,6 @@ import os
 from glob import glob
 from ryanair_timecapsule.api.constants import IATA_CODES
 
-OUTPUT_ABS_PATH = "/home/mbalos/Desktop/projects/ryanair_timecapsule"
 
 def make_tarfile(output_filename: str, source_dir: str):
     """Creates a gzipped tar archive that contains a top-level folder mirroring source_dir.
@@ -50,7 +49,7 @@ def download_ryanair(
     date_to: str,
     duration_from: int,
     duration_to: int,
-    market:str,
+    market: str,
     output_path: str,
 ):
     """Calls the ryanair farefinders api for each IATA code in iata_codes,
@@ -109,8 +108,10 @@ if __name__ == "__main__":
     year, month, day = date_now.split("-")
     date_end = (date_time_now + timedelta(duration_in_days)).isoformat()[:10]
 
+    output_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     output_path = os.path.join(
-        OUTPUT_ABS_PATH,
+        output_dir,
         "ryanair_timecapsule_results",
         year,
         month,
